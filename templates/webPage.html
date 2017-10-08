@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Handwritten Digit Recognition-CNN</title>
+  
+  
+  
+      <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
+
+</head>
+
+<body>
+ 
+		<h1>Handwritten Digit Recognition With CNN </span></h1>
+		
+		
+		
+		<div style=" display: flex;
+  align-items: center;
+  justify-content: center;">
+	<div>
+		<canvas id="canvas" width="280" height="280" style="border:4px solid; float: left; margin: 70px; margin-top:160px;  border-radius: 5px; cursor: crosshair;"></canvas>
+		
+			<br/>
+			
+			
+			
+		</div>	
+		
+					<div style="">
+			
+					<input type="button" class="clearButton" id="clearButton" value="Clear" style="background-color: #4CAF50; border: none;color: white;padding: 8px 20px; text-align: center; text-decoration: none;display: inline-block;font-size: 16px; border-radius:4px;
+					border:1px solid #4b8f29;padding:6px 13px;
+					text-decoration:none;
+					box-shadow: 0px 10px 14px -7px #3e7327;
+					background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #4DAF7C), color-stop(1, #72b352));
+					background:-moz-linear-gradient(top, #4DAF7C 5%, #72b352 100%);
+					background:-webkit-linear-gradient(top, #4DAF7C 5%, #72b352 100%);
+					background:-o-linear-gradient(top, #4DAF7C 5%, #72b352 100%);
+					background:-ms-linear-gradient(top, #4DAF7C 5%, #72b352 100%);
+					background:linear-gradient(to bottom, #4DAF7C 5%, #72b352 100%);
+					text-shadow:0px 1px 0px #5b8a3c; margin: 4px 2px;cursor: pointer;">
+					
+				<a href="#" class="myButton"><span style=" font-weight: 400; font-family: 'Open Sans', Helvetica;	"> Predict </span></a>	
+				<br/>
+			</div>	
+			
+		</div>
+		<h2 style="text-align: center;" id="result" ><span>Output:</span></h2>	
+	
+		
+        <div >
+			
+		</div>
+        
+   
+		
+  		<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+
+	    <script src="{{ url_for('static',filename='index.js') }}"></script>
+	    <script type="text/javascript">
+	   
+          $("#clearButton").on('click', function () {
+        			context.clearRect(0, 0, canvas.width, canvas.height);
+        		}); 
+		
+		$(".clearButton").click(function(){
+		
+			context.clearRect(0, 0, canvas.width, canvas.height);
+        		
+		});
+        
+        
+	   		$(".myButton").click(function(){
+	   			var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+	   			var canvasObj = document.getElementById("canvas");
+	   			var img = canvasObj.toDataURL();
+	   			$.ajax({
+	   				type: "POST",
+	   				url: $SCRIPT_ROOT + "/predict/",
+	   				data: img,
+	   				success: function(data){
+	   					$('#result').text('Output: '+ data);
+	   				}
+	   			});
+	   		});
+	   
+	   </script>
+</body>
+</html>
